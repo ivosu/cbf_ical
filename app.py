@@ -14,7 +14,7 @@ def get_matches(phase_id: int, team_id: int):
     use_emoji = request.args.get('use-emoji', True, type=distutils.util.strtobool)
     calendar_name = request.args.get('calendar-name', 'ČBF - rozpis zápasů')
     calendar = icalendar.Calendar()
-    calendar['version'] = '2'
+    calendar['version'] = '2.0'
     calendar['prodid'] = '-//CBF//NONSGML//EN'
     calendar.add('X-WR-CALNAME', calendar_name)
     for match in Cbf.Schedule.fetch_from_cbf(phase_id).matches:
