@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import distutils.util
-from flask import Flask, request
+from flask import Flask, request, url_for, redirect
 from typing import List, Tuple
 import icalendar
 import Cbf
@@ -10,6 +10,7 @@ app = Flask(__name__)
 
 
 @app.route('/cbf/ical/<int:phase_id>/<int:team_id>')
+@app.route('/cbf/ical/<int:phase_id>/<int:team_id>.ics')
 def get_matches(phase_id: int, team_id: int):
     use_emoji = request.args.get('use-emoji', True, type=distutils.util.strtobool)
     calendar_name = request.args.get('calendar-name', 'ČBF - rozpis zápasů')
@@ -48,6 +49,11 @@ def find_team(year: int, team_name: str):
                 if team_standing.name.lower() == lower_team_name:
                     team_id_and_phases.append((phase.id, team_standing.id))
     return str(team_id_and_phases)
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return redirect(url_for('static', filename='favicon.ico'))
 
 
 if __name__ == '__main__':
