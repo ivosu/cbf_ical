@@ -43,14 +43,7 @@ def get_matches(phase_id: int, team_id: int):
 def find_team():
     year: int = request.args.get('year', type=int)
     team_name: str = request.args.get('name')
-    lower_team_name = team_name.lower()
-    team_id_and_phases: List[Tuple[int, int]] = []
-    for division in Cbf.Season.fetch_from_cbf(year).divisions:
-        for phase in division.phases:
-            for team_standing in phase.standings.team_standings:
-                if team_standing.name.lower() == lower_team_name:
-                    team_id_and_phases.append((phase.id, team_standing.id))
-    return str(team_id_and_phases)
+    return str(Cbf.find_team(year, team_name))
 
 
 @app.route('/favicon.ico')

@@ -230,3 +230,14 @@ class Season:
         except ElementTree.ParseError:
             pass
         return cls(year, divisions)
+
+
+def find_team(year: int, team_name: str):
+    lower_team_name = team_name.lower()
+    team_id_and_phases: List[Tuple[int, int]] = []
+    for division in Season.fetch_from_cbf(year).divisions:
+        for phase in division.phases:
+            for team_standing in phase.standings.team_standings:
+                if team_standing.name.lower() == lower_team_name:
+                    team_id_and_phases.append((phase.id, team_standing.id))
+    return team_id_and_phases
