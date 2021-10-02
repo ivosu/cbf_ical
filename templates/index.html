@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+              crossorigin="anonymous">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css"
+              rel="stylesheet"/>
+
+        <title>ČBF ICAL</title>
+    </head>
+    <body>
+        <h1>ČBF ICAL</h1>
+        <form>
+            <div class="mb-3">
+                <label for="team_name" class="form-label">Jméno týmu</label>
+                <input class="form-control" id="team_name" name="team_name"
+                       value="{{ request.args.get("team_name", "") }}" aria-describedby="team_help">
+                <div id="team_help" class="form-text">Prosím, uveďte přesně celé jméno týmu</div>
+            </div>
+            <div class="mb-3">
+                <label for="year" class="form-label">Rok</label>
+                <input id="year" name="year" class="year-picker form-control" value="{{ request.args.get("year", "") }}"
+                       type="text">
+            </div>
+            <button type="submit" class="btn btn-primary">Najít rozpisy</button>
+
+            {% if phases %}
+                {% for phase in phases %}
+                    <div>{{ phase[0] }} : {{ phase[1] }}</div>
+                {% endfor %}
+            {% endif %}
+
+            {% if team and phase %}
+                <h2>{{ team }}, {{ phase }}</h2>
+            {% endif %}
+
+            <!-- JS -->
+            <script src="{{ url_for('static', filename='js.js') }}"></script>
+
+        </form>
+    </body>
+</html>

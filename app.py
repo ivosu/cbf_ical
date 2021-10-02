@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import distutils.util
-from flask import Flask, request, url_for, redirect
+from flask import Flask, request, url_for, redirect, render_template
 from typing import List, Tuple
 import icalendar
 import Cbf
@@ -49,6 +49,18 @@ def find_team():
 @app.route('/favicon.ico')
 def favicon():
     return redirect(url_for('static', filename='favicon.ico'))
+
+
+@app.route('/')
+@app.route('/index.html')
+def index():
+    team_name = request.args.get("team_name", None)
+    year = request.args.get("year", None, type=int)
+    if team_name and year:
+        phases = find_team(year, team_name)
+    else:
+        phases = None
+    return render_template('index.html', phases=phases)
 
 
 if __name__ == '__main__':
