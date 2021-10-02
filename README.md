@@ -9,7 +9,9 @@ This project is written in `python 3` and for the HTTP interface `Flask` is used
 
 ## Usage
 This app provides two main routes:\
-* `/cbf/find_team` with params `year` and `name`, returning phase ids and team ids of specific team for given year. Right now only (case-insensitive) exact match is used.
+* `/cbf/find_team` with params `year` and `name`, returning phase ids and team ids of specific team for given year.
+Right now only (case-insensitive) exact match is used. This can also take a lot of time,
+so you might need to set higher timeout limit on your server.
 
 * `/cbf/ical/<phase_id>/<team_id>` returning the icalendar with match schedule itself. This is two optional arguments -
 `use-emoji` defining whether a basketball emoji (🏀) is used in the event name <sup>2</sup> (default is true), and `calendar-name` for specifying
