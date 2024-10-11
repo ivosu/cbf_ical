@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="cs">
+	<body>
+		<select name="competition_area">
+			{% for area in areas %}
+			<option value="{{ areas[area] }}">{{ area }}</option>
+			{% endfor %}
+		</select>
+		<select name="competition_season">
+			{% for season in seasons %}
+			<option value="{{ season.short_name }}" {% if season.current == true %} selected {% endif %}>{{ season.name }}</option>
+			{% endfor %}
+		</select>
+		<input type="text" placeholder="Název týmu"/>
+		<input type="submit" value="Vyhledat soutěže týmu"> 
+	</body>
+</html>
