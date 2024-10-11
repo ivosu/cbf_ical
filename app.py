@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
 import distutils.util
-from flask import Flask, request, url_for, redirect
+from datetime import datetime, timedelta
+from flask import Flask, Response, request, url_for, redirect
 from typing import List, Tuple
 import icalendar
 import Cbf
@@ -23,6 +24,8 @@ def get_matches(phase_id: int, team_id: int):
             event = icalendar.Event()
             event['uid'] = str(match.id)
             event.add('dtstart', match.start)
+            event.add('duration', timedelta(hours=1, minutes=30))
+            event.add('dtstamp', datetime.utcnow())
             if match.home_team.id == team_id:
                 # home match
                 summary = "vs. " + match.visiting_team.abbr
@@ -36,7 +39,8 @@ def get_matches(phase_id: int, team_id: int):
                 description += ' (' + str(match.result.score[0]) + ':' + str(match.result.score[1]) + ')'
             event.add('description', description)
             calendar.add_component(event)
-    return calendar.to_ical()
+    r = Response(response=calendar.to_ical(), status=200, content_type='text/calendar; charset=utf-8')
+    return r
 
 
 @app.route('/cbf/find_team')
